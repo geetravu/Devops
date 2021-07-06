@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: karthiknginx
-        image: karthiksaigummalapu/ngnix:v1
+        image: raveendrareddy/learning:latest-2
         ports:
         - containerPort: 80
       imagePullSecrets:
-      - name: karthik-secret
+      - name: secret-tiger-docker
