@@ -1,23 +1,24 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: karthikdeployment
   labels:
-    app: nginx
+    app: karthiknginx
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: karthiknginx
   template:
     metadata:
       labels:
-        app: nginx
+        app: karthiknginx
     spec:
       containers:
-      - name: nginx
-        image: raveendrareddy/learning:latest-2
+      - name: karthiknginx
+        image: karthiksaigummalapu/ngnix:v1
         ports:
         - containerPort: 80
       imagePullSecrets:
-       - name: secret-tiger-docker
+      - name: karthik-secret
