@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-demo.fullname" . }}
+  labels:
+    {{- include "helm-demo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "helm-demo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+      {{- include "helm-demo.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Values.container.name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+        - containerPort: {{ .Values.container.portnum }}
+{{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+{{- end }}
+{{- if .Values.livenessProbe.enabled }}
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+{{- end }}
+        envFrom:
+          - configMapRef:
+              name: {{ include "helm-demo.fullname" . }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }}
